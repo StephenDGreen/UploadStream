@@ -1,0 +1,71 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model Upload.Pages.FileListModel
+@{
+    ViewData["Title"] = "File List";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>File List (files less than 2 Mb)</h1>
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (Model.DatabaseFiles.Count == 0)
+    {
+        <p>
+            No files are available. 
+        </p>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DatabaseFiles[0].UntrustedName)
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DatabaseFiles[0].UploadDT)
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DatabaseFiles[0].Size)
+                    </th>
+                    <th>
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var file in Model.DatabaseFiles)
+                {
+                    <tr>
+                        <td>
+                            <b>@file.UntrustedName</b><br>
+                        </td>
+                        <td class="text-center">
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => file.UploadDT)
+                        </td>
+                        <td class="text-center">
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => file.Size)
+                        </td>
+                        <td class="text-center">
+                        </td>
+                        <td class="text-center">
+                            <a asp-page-handler="DownloadDb" asp-route-id="@file.Id">Download</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}

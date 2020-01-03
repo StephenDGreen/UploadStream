@@ -1,0 +1,43 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model Upload.Pages.FileUploadModel
+@{
+    ViewData["Title"] = "FileUpload";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>File Upload</h1>
+
+
+    <form enctype="multipart/form-data" method="post">
+        <dl>
+            <dt>
+                <label asp-for="FileUpload.Note"></label>
+            </dt>
+            <dd>
+                <input asp-for="FileUpload.Note" type="text" />
+                <span asp-validation-for="FileUpload.Note"></span>
+            </dd>
+            <dt>
+                <label asp-for="FileUpload.FormFiles"></label>
+            </dt>
+            <dd>
+                <input asp-for="FileUpload.FormFiles" type="file" multiple />
+                <span asp-validation-for="FileUpload.FormFiles"></span>
+            </dd>
+        </dl>
+        <input asp-page-handler="Upload" class="btn btn-primary" type="submit" value="Upload" />
+    </form>
+
+    <p class="result">
+        @Model.Result
+    </p>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+}
